@@ -8,7 +8,9 @@
 ![Redis](https://img.shields.io/badge/Redis-Message_Broker-red)
 ![Binance API](https://img.shields.io/badge/API-Binance_RealTime-yellow)
 
-**CryptoPredict** is a machine learning-based web application that predicts future prices of major cryptocurrencies (Bitcoin, Ethereum, Solana, etc.). Built with **Django** and **TensorFlow**, it utilizes LSTM (Long Short-Term Memory) neural networks to analyze historical data and forecast hourly and daily price trends.
+**CryptoPredict**  is an advanced machine learning platform designed to predict cryptocurrency price movements. Unlike static predictors, this application leverages **Celery and Redis** to handle asynchronous tasks and fetches **real-time data via the Binance API** to provide up-to-the-minute forecasts.
+
+The system is trained on extensive historical data (sourced from **CoinDesk**) dating back to the inception of each coin, ensuring robust model performance.
 
 ---
 
@@ -40,50 +42,69 @@
 
 ## 🚀 Key Features
 
-*   **🤖 AI-Driven Predictions:** Uses pre-trained LSTM models (`.h5`) to forecast prices.
-*   **📉 Multi-Timeframe Analysis:** Supports both **Hourly** and **Daily** price predictions.
-*   **🪙 Multi-Coin Support:** Covers major assets like BTC, ETH, SOL, ADA, DOT, and LINK.
-*   **🔐 User Authentication:** Secure Login and Signup system using Django Auth.
-*   **📊 Interactive Visualizations:** Dynamic charts comparing actual historical data vs. predicted values.
-*   **📂 Modular Architecture:** Organized into Data Collection, Model Training, and Web Deployment milestones.
+*   **🧠 Deep Learning Models:** Utilizes **LSTM (Long Short-Term Memory)** and **GRU** neural networks, optimized for time-series forecasting.
+*   **⚡ Real-Time Predictions:** Connects to the **Binance API** to fetch live market data and generate instant price predictions.
+*   **📚 Extensive Historical Data:** Models are trained on datasets sourced from **CoinDesk**, covering the entire history of each coin (from launch to present).
+*   **🔄 Asynchronous Processing:** Implements **Celery** workers with a **Redis** broker to handle data fetching and model inference in the background without freezing the UI.
+*   **🪙 9 Major Currencies:** Fully supported predictions for:
+    *   Bitcoin (BTC)
+    *   Ethereum (ETH)
+    *   Solana (SOL)
+    *   Cardano (ADA)
+    *   Polkadot (DOT)
+    *   Chainlink (LINK)
+    *   Dogecoin (DOGE)
+    *   Litecoin (LTC)
+    *   Polygon (MATIC)
+*   **🐧 WSL Environment:** Developed and optimized using **Windows Subsystem for Linux (WSL)** for superior performance and compatibility with Redis/Celery.
 
 ---
+
 
 ## 🛠️ Tech Stack
 
-| Component | Technology |
-| :--- | :--- |
-| **Backend** | Python, Django Framework |
-| **ML Engine** | TensorFlow, Keras, Scikit-Learn, Joblib |
-| **Data Processing** | Pandas, NumPy |
-| **Frontend** | HTML5, CSS3, JavaScript, Bootstrap |
-| **Database** | SQLite (Development) |
-| **Version Control** | Git & GitHub |
+| Component | Technology | Role |
+| :--- | :--- | :--- |
+| **Backend Framework** | Django (Python) | Core web server and routing. |
+| **ML Engine** | TensorFlow / Keras | Training LSTM models and running inference. |
+| **Task Queue** | **Celery** | Handling background jobs (scheduled data fetching). |
+| **Message Broker** | **Redis** | Communication between Django and Celery. |
+| **Live Data Source** | **Binance API** | Real-time candle/price data. |
+| **Historical Data** | **CoinDesk API** | Training datasets (2014-Present). |
+| **Environment** | **WSL (Ubuntu)** | Development environment. |
+| **Frontend** | HTML5, Bootstrap, JS | Responsive user interface and charts. |
 
 ---
 
-## 📂 Project Structure
-
-The repository is organized by development phases:
+## 📂 Detailed Project Structure
 
 ```text
 CRYPTO-PREDICTION-PLATFORM/
 │
-├── Milestone1/          # Data Collection Scripts
-│   ├── data_collector.py
-│   └── ...
+├── Milestone1/              # 📥 Data Acquisition
+│   ├── data_collector.py    # Scripts to scrape full history from CoinDesk
+│   └── binance_stream.py    # Websocket connection for real-time Binance data
 │
-├── Milestone2/          # Machine Learning Core
-│   ├── trainer.py       # LSTM Model Training Logic
-│   ├── predictor.py     # Inference Logic
-│   └── models/          # Saved .h5 Models & Scalers
+├── Milestone2/              # 🤖 Machine Learning Core
+│   ├── trainer.py           # LSTM Model architecture and training loop
+│   ├── predictor.py         # Inference logic (loads .h5 files)
+│   ├── hyper_tuning.py      # GridSearch for optimizing model parameters
+│   └── models/              # Directory containing trained .h5 models & .joblib scalers
 │
-├── Milestone3/          # Web Application (Django)
-│   ├── crypto_web_app/  # Project Settings
-│   ├── prediction_app/  # App Logic (Views, URLs)
-│   └── templates/       # HTML Frontend
+├── Milestone3/              # 🌐 Web Application (Django)
+│   ├── crypto_web_app/      # Main Project Configuration
+│   │   ├── settings.py      # Django + Celery + Redis Configuration
+│   │   ├── celery.py        # Celery App Entry Point
+│   │   └── urls.py
+│   │
+│   ├── prediction_app/      # App Logic
+│   │   ├── tasks.py         # Celery Tasks (background prediction jobs)
+│   │   ├── views.py         # Connects frontend to ML models
+│   │   └── urls.py
+│   │
+│   └── templates/           # Frontend UI (Dashboards, Login, History)
 │
-├── data/                # Raw CSV Datasets (Daily/Hourly)
-├── screenshots/         # Images for README
-├── manage.py            # Django Entry Point
-└── requirements.txt     # Python Dependencies
+├── data/                    # Raw CSV Datasets (Daily/Hourly)
+├── static/                  # CSS, JavaScript, Images
+├── manage.py
+└── requirements.txt
