@@ -78,37 +78,6 @@ The system is trained on extensive historical data (sourced from **CoinDesk**) d
 
 ## 📂 Detailed Project Structure
 
-```text
-CRYPTO-PREDICTION-PLATFORM/
-│
-├── Milestone1/              # 📥 Data Acquisition
-│   ├── data_collector.py    # Scripts to scrape full history from CoinDesk
-│   └── binance_stream.py    # Websocket connection for real-time Binance data
-│
-├── Milestone2/              # 🤖 Machine Learning Core
-│   ├── trainer.py           # LSTM Model architecture and training loop
-│   ├── predictor.py         # Inference logic (loads .h5 files)
-│   ├── hyper_tuning.py      # GridSearch for optimizing model parameters
-│   └── models/              # Directory containing trained .h5 models & .joblib scalers
-│
-├── Milestone3/              # 🌐 Web Application (Django)
-│   ├── crypto_web_app/      # Main Project Configuration
-│   │   ├── settings.py      # Django + Celery + Redis Configuration
-│   │   ├── celery.py        # Celery App Entry Point
-│   │   └── urls.py
-│   │
-│   ├── prediction_app/      # App Logic
-│   │   ├── tasks.py         # Celery Tasks (background prediction jobs)
-│   │   ├── views.py         # Connects frontend to ML models
-│   │   └── urls.py
-│   │
-│   └── templates/           # Frontend UI (Dashboards, Login, History)
-│
-├── data/                    # Raw CSV Datasets (Daily/Hourly)
-├── static/                  # CSS, JavaScript, Images
-├── manage.py
-└── requirements.txt
-
 ## ⚙️ Installation & Setup (WSL/Linux)
 
 **Note:** Since this project utilizes **Redis** (as a message broker) and **Celery** (for asynchronous tasks), it is strictly recommended to run this project inside **WSL (Windows Subsystem for Linux)** or a native Linux environment (Ubuntu/Debian).
