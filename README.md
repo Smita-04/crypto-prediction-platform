@@ -16,7 +16,8 @@
 ![Dashboard Preview](screenshots/dashboard.png)
 
 ### 2. User Login & Authentication
-![Login Page](screenshots/login.png)
+<img width="1920" height="1080" alt="Screenshot (349)" src="https://github.com/user-attachments/assets/a13ebe21-c06a-4e0e-86c3-b378d4f7e747" />
+
 
 ### 3. Prediction Results & Graphs
 ![Results Graph](screenshots/prediction.png)
