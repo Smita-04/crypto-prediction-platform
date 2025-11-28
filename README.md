@@ -11,15 +11,16 @@
 
 ## 📸 Project Screenshots
 
-### 1. Prediction Dashboard
-<!-- Make sure you have a folder named 'screenshots' with an image named 'dashboard.png' -->
-<img width="1920" height="1080" alt="Screenshot (285)" src="https://github.com/user-attachments/assets/e1d7742b-40fb-4fe6-a8bc-77fa58c24cb5" />
-
-
-### 2. User Login & Authentication
+### 1. User Login & Authentication
 <img width="1920" height="1080" alt="Screenshot (349)" src="https://github.com/user-attachments/assets/a13ebe21-c06a-4e0e-86c3-b378d4f7e747" />
 <img width="1920" height="1080" alt="Screenshot (350)" src="https://github.com/user-attachments/assets/63e24d33-d4ca-4362-9223-6b355424e13f" />
 <img width="1920" height="1080" alt="Screenshot (351)" src="https://github.com/user-attachments/assets/ce2d433e-6440-4622-a574-14e475958679" />
+
+
+### 2. Prediction Dashboard
+<!-- Make sure you have a folder named 'screenshots' with an image named 'dashboard.png' -->
+<img width="1920" height="1080" alt="Screenshot (285)" src="https://github.com/user-attachments/assets/e1d7742b-40fb-4fe6-a8bc-77fa58c24cb5" />
+
 
 
 
