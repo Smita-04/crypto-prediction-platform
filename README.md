@@ -107,6 +107,8 @@ CRYPTO-PREDICTION-PLATFORM/
 ├── static/                  # CSS, JavaScript, Images
 ├── manage.py
 └── requirements.txt
+```  <-- ADD THESE 3 BACKTICKS HERE
+
 ---
 ## ⚙️ Installation & Setup (WSL/Linux)
 
