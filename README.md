@@ -13,7 +13,8 @@
 
 ### 1. Prediction Dashboard
 <!-- Make sure you have a folder named 'screenshots' with an image named 'dashboard.png' -->
-![Dashboard Preview](screenshots/dashboard.png)
+<img width="1920" height="1080" alt="Screenshot (285)" src="https://github.com/user-attachments/assets/e1d7742b-40fb-4fe6-a8bc-77fa58c24cb5" />
+
 
 ### 2. User Login & Authentication
 <img width="1920" height="1080" alt="Screenshot (349)" src="https://github.com/user-attachments/assets/a13ebe21-c06a-4e0e-86c3-b378d4f7e747" />
