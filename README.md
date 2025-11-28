@@ -107,7 +107,7 @@ CRYPTO-PREDICTION-PLATFORM/
 ├── static/                  # CSS, JavaScript, Images
 ├── manage.py
 └── requirements.txt
-
+---
 ## ⚙️ Installation & Setup (WSL/Linux)
 
 **Note:** Since this project utilizes **Redis** (as a message broker) and **Celery** (for asynchronous tasks), it is strictly recommended to run this project inside **WSL (Windows Subsystem for Linux)** or a native Linux environment (Ubuntu/Debian).
