@@ -1,0 +1,345 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - CryptoPredict{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+{% endblock %}
+
+{% block extra_css %}
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    min-height: 100vh;
+    color: #fff;
+}
+
+.navbar {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, #00ff9d, #00d4ff);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #0f0c29;
+}
+
+.logo h2 {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.nav-links a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #00ff9d;
+}
+
+.logout-btn {
+    padding: 10px 25px;
+    background: rgba(255, 59, 48, 0.2);
+    border: 1px solid rgba(255, 59, 48, 0.5);
+    border-radius: 8px;
+    color: #ff6b6b;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 59, 48, 0.3);
+}
+
+.main-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px;
+}
+
+.welcome-section {
+    text-align: center;
+    margin-bottom: 60px;
+    animation: fadeInDown 0.8s ease;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.welcome-section h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #00ff9d, #00d4ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.welcome-section p {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.crypto-logos-section {
+    text-align: center;
+    animation: fadeInUp 0.8s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.section-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 40px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.crypto-logos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 30px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.crypto-logo-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s;
+}
+
+.crypto-logo-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 40px rgba(0, 255, 157, 0.2);
+}
+
+.crypto-logo-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+
+.btc { background: linear-gradient(135deg, #f7931a, #ff6b35); }
+.eth { background: linear-gradient(135deg, #627eea, #8a92b2); }
+.ada { background: linear-gradient(135deg, #0033ad, #0055ff); }
+.link { background: linear-gradient(135deg, #2a5ada, #4c7ef3); }
+.doge { background: linear-gradient(135deg, #c2a633, #e5c100); }
+.ltc { background: linear-gradient(135deg, #345d9d, #4a7abc); }
+.dot { background: linear-gradient(135deg, #e6007a, #ff4d9f); }
+.sol { background: linear-gradient(135deg, #14f195, #9945ff); }
+.matic { background: linear-gradient(135deg, #8247e5, #a569ff); }
+
+.crypto-logo-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.crypto-logo-symbol {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 768px) {
+    .navbar-container {
+        flex-direction: column;
+    }
+    
+    .welcome-section h1 {
+        font-size: 36px;
+    }
+    
+    .crypto-logos-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<nav class="navbar">
+    <div class="navbar-container">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <h2>CryptoPredict</h2>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'welcome' %}"><i class="fas fa-home"></i> Dashboard</a>
+            {# --- CRITICAL FIX HERE --- #}
+            {# Original: <a href="{% url 'make_prediction' %}"><i class="fas fa-chart-bar"></i> Predictions</a> #}
+            <a href="{% url 'prediction_form' %}"><i class="fas fa-chart-bar"></i> Predictions</a> {# CHANGED THIS LINE #}
+            {# --- END CRITICAL FIX --- #}
+            <a href="{% url 'history' %}"><i class="fas fa-history"></i> History</a>
+            <form method="POST" action="{% url 'account_logout' %}" style="display: inline; margin: 0;">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="main-container">
+    <div class="welcome-section">
+        <h1>Welcome, {{ username }}! 👋</h1>
+        <p>Track and predict 9 major cryptocurrencies</p>
+    </div>
+
+    <div class="crypto-logos-section">
+        <h2 class="section-title"><i class="fas fa-coins"></i> 9 Cryptocurrencies</h2>
+        
+        <div class="crypto-logos-grid">
+            <div class="crypto-logo-item">
+                <div class="crypto-logo-icon btc">
+                    <i class="fab fa-bitcoin"></i>
+                </div>
+                <div class="crypto-logo-name">Bitcoin</div>
+                <div class="crypto-logo-symbol">BTC</div>
+            </div>
+
+            <div class="crypto-logo-item">
+                <div class="crypto-logo-icon eth">
+                    <i class="fab fa-ethereum"></i>
+                </div>
+                <div class="crypto-logo-name">Ethereum</div>
+                <div class="crypto-logo-symbol">ETH</div>
+            </div>
+
+            <div class="crypto-logo-item">
+                <div class="crypto-logo-icon ada">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="crypto-logo-name">Cardano</div>
+                <div class="crypto-logo-symbol">ADA</div>
+            </div>
+
+            <div class="crypto-logo-item">
+                <div class="crypto-logo-icon link">
+                    <i class="fas fa-link"></i>
+                </div>
+                <div class="crypto-logo-name">Chainlink</div>
+                <div class="crypto-logo-symbol">LINK</div>
+            </div>
+
+            <div class="crypto-logo-item">
+                <div class="crypto-logo-icon doge">
+                    <i class="fas fa-dog"></i>
+                </div>
+                <div class="crypto-logo-name">Dogecoin</div>
+                <div class="crypto-logo-symbol">DOGE</div>
+            </div>
+
+            <div class="crypto-logo-item">
+                <div class="crypto-logo-icon ltc">
+                    <i class="fas fa-lira-sign"></i>
+                </div>
+                <div class="crypto-logo-name">Litecoin</div>
+                <div class="crypto-logo-symbol">LTC</div>
+            </div>
+
+            <div class="crypto-logo-item">
+                <div class="crypto-logo-icon dot">
+                    <i class="fas fa-circle-notch"></i>
+                </div>
+                <div class="crypto-logo-name">Polkadot</div>
+                <div class="crypto-logo-symbol">DOT</div>
+            </div>
+
+            <div class="crypto-logo-item">
+                <div class="crypto-logo-icon sol">
+                    <i class="fas fa-sun"></i>
+                </div>
+                <div class="crypto-logo-name">Solana</div>
+                <div class="crypto-logo-symbol">SOL</div>
+            </div>
+
+            <div class="crypto-logo-item">
+                <div class="crypto-logo-icon matic">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                <div class="crypto-logo-name">Polygon</div>
+                <div class="crypto-logo-symbol">MATIC</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

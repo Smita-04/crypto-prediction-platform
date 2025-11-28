@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %} {# Ensure this is loaded if you use static files in CSS/JS beyond inline styles #}
+
+{% block title %}{% trans "Sign Out" %}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Your existing CSS for logout.html goes here.
+   I'm including the full set of styles you provided previously for clarity. */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    position: relative;
+    overflow: hidden;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(0, 255, 157, 0.1), transparent);
+    animation: wave 15s linear infinite;
+}
+
+@keyframes wave {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Renamed from .prediction-form-container to .logout-container for better semantics specific to this page */
+.logout-container { 
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 450px;
+    padding: 20px;
+}
+
+/* Targeting the direct child div within .logout-container */
+.logout-container > div { 
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border-radius: 25px;
+    padding: 50px 40px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: fadeInUp 0.8s ease;
+    text-align: center;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Targeting h2 within .logout-container > div for pseudo-elements */
+.logout-container > div h2::before { 
+    content: '';
+    display: block;
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+    border-radius: 50%;
+    margin: 0 auto 30px;
+    position: relative; /* Ensure relative positioning for ::after */
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.logout-container > div h2::after { /* Targeting h2 within .logout-container > div */
+    content: '\f2f5'; /* Font Awesome sign-out icon */
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    top: 50%; /* Adjusted from top: 50px; to center vertically in its pseudo-parent */
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centering trick */
+    font-size: 40px;
+    color: #fff;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.logout-container > div h2 { /* Targeting h2 within .logout-container > div */
+    color: #fff;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    position: relative;
+    padding-top: 110px; /* Adjusted to make space for the pseudo-element icon */
+}
+
+.logout-container > div p { /* Targeting p within .logout-container > div */
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 16px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.logout-container form { /* Targeting form within .logout-container */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.logout-container button[type="submit"] { /* Target only submit button */
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.logout-container button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+}
+
+@media (max-width: 480px) {
+    .logout-container > div {
+        padding: 40px 25px;
+    }
+    
+    .logout-container > div h2 {
+        font-size: 26px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="logout-container"> {# Renamed outer div class #}
+        <div>
+            <h2>{% trans "Sign Out" %}</h2>
+
+            <p>{% trans 'Are you sure you want to sign out?' %}</p>
+
+            <form method="post" action="{% url 'account_logout' %}">
+                {% csrf_token %}
+                <button type="submit">{% trans 'Sign Out' %}</button>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

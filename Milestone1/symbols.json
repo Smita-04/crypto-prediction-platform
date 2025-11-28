@@ -1,0 +1,11 @@
+[
+    {"symbol": "BTC-INR", "name": "Bitcoin", "color": "orange", "logo": "₿"},
+    {"symbol": "ETH-INR", "name": "Ethereum", "color": "blue", "logo": "Ξ"},
+    {"symbol": "DOGE-INR", "name": "Dogecoin", "color": "yellow", "logo": "Ð"},
+    {"symbol": "DOT-INR", "name": "Polkadot", "color": "pink", "logo": "●"},
+    {"symbol": "LINK-INR", "name": "Chainlink", "color": "blue", "logo": "⬡"},
+    {"symbol": "MATIC-INR", "name": "Polygon", "color": "purple", "logo": "⬟"},
+    {"symbol": "SOL-INR", "name": "Solana", "color": "cyan", "logo": "◎"},
+    {"symbol": "LTC-INR", "name": "Litecoin", "color": "silver", "logo": "Ł"},
+    {"symbol": "ADA-INR", "name": "Cardano", "color": "red", "logo": "A"}
+]

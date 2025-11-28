@@ -1,0 +1,298 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load account %} {# Only load 'account' for local signup, not 'socialaccount' #}
+
+{% block title %}{% trans "Sign Up" %}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Your existing CSS styles go here. */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    position: relative;
+    overflow: auto;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(0, 255, 157, 0.1), transparent);
+    animation: wave 15s linear infinite;
+}
+
+@keyframes wave {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.prediction-form-container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+    margin: 50px auto;
+    max-height: none;
+}
+
+.prediction-form-container > div {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border-radius: 25px;
+    padding: 50px 40px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: fadeInUp 0.8s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.prediction-form-container h2::before {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #00ff9d, #00d4ff);
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    position: relative;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.prediction-form-container h2::after {
+    content: '\f234';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    color: #0f0c29;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.prediction-form-container h2 {
+    color: #fff;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+    position: relative;
+    padding-top: 100px;
+}
+
+.prediction-form-container p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.prediction-form-container p a {
+    color: #00ff9d;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.prediction-form-container p a:hover {
+    color: #00d4ff;
+    text-decoration: underline;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 25px 0;
+}
+
+.prediction-form-container form {
+    margin-top: 20px;
+}
+
+.prediction-form-container form .form-group {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.prediction-form-container form label {
+    display: block;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+   color: #FFFFFF;
+    font-size: 18px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 15px 15px 15px 45px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #00ff9d;
+    box-shadow: 0 0 20px rgba(0, 255, 157, 0.2);
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.prediction-form-container form .helptext {
+    display: block;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 12px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+.prediction-form-container form ul.errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 5px 0 10px 0;
+}
+
+.prediction-form-container form ul.errorlist li {
+    background: rgba(255, 59, 48, 0.1);
+    border: 1px solid rgba(255, 59, 48, 0.3);
+    color: #ff6b6b;
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    font-size: 13px;
+}
+
+.prediction-form-container button[type="submit"] {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #00ff9d, #00d4ff);
+    border: none;
+    border-radius: 12px;
+    color: #0f0c29;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.prediction-form-container button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0, 255, 157, 0.3);
+}
+
+@media (max-width: 480px) {
+    .prediction-form-container > div {
+        padding: 40px 25px;
+    }
+    
+    .prediction-form-container h2 {
+        font-size: 26px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="prediction-form-container">
+        <div>
+            <h2>{% trans "Sign Up" %}</h2>
+
+            {# Removed: {% get_providers as socialaccount_providers %} and the entire if socialaccount_providers block #}
+            {# As per your request, social logins are not desired. #}
+
+            <form class="signup" id="signup_form" method="POST" action="{% url 'account_signup' %}">
+                {% csrf_token %}
+                
+                {# Manually render form fields to apply custom styling #}
+                {% for field in form %}
+    <div class="form-group">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        <div class="input-wrapper">
+            {# Add icons based on field name or type #}
+            {% if field.name == 'email' %}
+                <i class="fas fa-envelope input-icon"></i>
+            {% elif field.name == 'password1' or field.name == 'password2' %}
+                <i class="fas fa-lock input-icon"></i>
+            {% else %}
+                <i class="fas fa-edit input-icon"></i> {# Generic icon for other fields #}
+            {% endif %}
+            <input type="{{ field.field.widget.input_type }}" 
+                   name="{{ field.name }}" 
+                   id="{{ field.id_for_label }}" 
+                   class="form-control"
+                   {% if field.field.required %}required{% endif %}
+                   placeholder="{{ field.label }}">
+        </div>
+                        {% if field.help_text %}
+                            <p class="helptext">{{ field.help_text }}</p>
+                        {% endif %}
+                        {% if field.errors %}
+                            <ul class="errorlist">
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                {% endif %}
+                <button type="submit">{% trans "Sign Up" %}</button>
+            </form>
+
+            <p style="text-align: center; margin-top: 25px; color: rgba(255, 255, 255, 0.6); font-size: 14px;">
+                Already have an account? <a href="{% url 'account_login' %}" style="color: #00ff9d; text-decoration: none;">Log In</a>
+            </p>
+
+        </div>
+    </div>
+{% endblock content %}

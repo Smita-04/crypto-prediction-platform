@@ -1,0 +1,803 @@
+{% extends 'base.html' %}
+
+{% block title %}Prediction - CryptoPredict{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Your existing CSS styles remain unchanged here */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    min-height: 100vh;
+    color: #fff;
+}
+
+.navbar {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, #00ff9d, #00d4ff);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #0f0c29;
+}
+
+.logo h2 {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.nav-links a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #00ff9d;
+}
+
+.logout-btn {
+    padding: 10px 25px;
+    background: rgba(255, 59, 48, 0.2);
+    border: 1px solid rgba(255, 59, 48, 0.5);
+    border-radius: 8px;
+    color: #ff6b6b;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 59, 48, 0.3);
+}
+
+.main-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 40px;
+}
+
+.page-header {
+    text-align: center;
+    margin-bottom: 50px;
+    animation: fadeInDown 0.8s ease;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.page-header h1 {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #00ff9d, #00d4ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.page-header p {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.prediction-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.form-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: fadeInLeft 0.8s ease;
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.form-card h2 {
+    font-size: 24px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.form-select, .form-input {
+    width: 100%;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 15px;
+    transition: all 0.3s;
+    font-family: 'Poppins', sans-serif;
+}
+
+.form-select:focus, .form-input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #00ff9d;
+    box-shadow: 0 0 20px rgba(0, 255, 157, 0.2);
+}
+
+.form-select option {
+    background: #1a1a2e;
+    color: #fff;
+}
+
+.input-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.btn-predict {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, #00ff9d, #00d4ff);
+    border: none;
+    border-radius: 12px;
+    color: #0f0c29;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 10px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.btn-predict:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0, 255, 157, 0.3);
+}
+
+.btn-predict:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.info-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: fadeInRight 0.8s ease;
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.info-card h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.info-item {
+    display: flex;
+    align-items: start;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+}
+
+.info-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #00ff9d, #00d4ff);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #0f0c29;
+    flex-shrink: 0;
+}
+
+.info-text h3 {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.info-text p {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.5;
+}
+
+.result-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: none;
+    animation: fadeInUp 0.8s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.result-card.active {
+    display: block;
+}
+
+.result-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.result-header h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.result-header .success-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #00ff9d, #00d4ff);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    color: #0f0c29;
+    margin-bottom: 20px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.result-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Changed to 2 columns */
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.result-item {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.result-item .label {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 10px;
+}
+
+.result-item .value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #00ff9d;
+}
+
+.result-item .value.confidence {
+    color: #00d4ff;
+}
+
+.chart-container {
+    width: 100%;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 15px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-secondary {
+    flex: 1;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.loader {
+    display: none;
+    text-align: center;
+    padding: 40px;
+}
+
+.loader.active {
+    display: block;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 20px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-top: 4px solid #00ff9d;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 968px) {
+    .prediction-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .result-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .input-group {
+        grid-template-columns: 1fr;
+    }
+    
+    .navbar-container {
+        flex-direction: column;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<nav class="navbar">
+    <div class="navbar-container">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <h2>CryptoPredict</h2>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'welcome' %}"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="{% url 'prediction_form' %}"><i class="fas fa-chart-bar"></i> Predictions</a>
+            <a href="{% url 'history' %}"><i class="fas fa-history"></i> History</a>
+            <form method="POST" action="{% url 'account_logout' %}" style="display: inline; margin: 0;">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="main-container">
+    <div class="page-header">
+        <h1><i class="fas fa-magic"></i> AI Price Prediction</h1>
+        <p>Select from 9 cryptocurrencies and generate intelligent forecasts</p>
+    </div>
+
+    <div class="prediction-container">
+        <div class="form-card">
+            <h2><i class="fas fa-sliders-h"></i> Configuration</h2>
+            <form id="predictionForm">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="cryptocurrency">Cryptocurrency</label>
+                    <select id="cryptocurrency" name="cryptocurrency" class="form-select" required>
+                        <option value="">Select Coin</option>
+                        <option value="BTC">Bitcoin (BTC)</option>
+                        <option value="ETH">Ethereum (ETH)</option>
+                        <option value="ADA">Cardano (ADA)</option>
+                        <option value="LINK">Chainlink (LINK)</option>
+                        <option value="DOGE">Dogecoin (DOGE)</option>
+                        <option value="LTC">Litecoin (LTC)</option>
+                        <option value="DOT">Polkadot (DOT)</option>
+                        <option value="SOL">Solana (SOL)</option>
+                        <option value="MATIC">Polygon (MATIC)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="currency">Currency</label>
+                    <select id="currency" name="currency" class="form-select" required>
+                        <option value="USD">USD ($)</option>
+                        <option value="INR">INR (₹)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <div class="form-group">
+                        <label for="timeframe_type">Timeframe Type</label>
+                        <select id="timeframe_type" name="timeframe_type" class="form-select" required>
+                            <option value="hourly">Hour</option>
+                            <option value="daily">Day</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="timeframe_value">Duration</label>
+                        <input type="number" id="timeframe_value" name="timeframe_value" 
+                               class="form-input" min="1" max="30" value="1" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-predict" id="predictBtn">
+                    <i class="fas fa-magic"></i> Generate Prediction
+                </button>
+            </form>
+        </div>
+            
+    <div class="loader" id="loader">
+        <div class="spinner"></div>
+        <p id="loaderMessage">Analyzing market data and generating prediction...</p>
+    </div>
+
+    <div class="result-card" id="resultCard">
+        <div class="result-header">
+            <div class="success-icon">
+                <i class="fas fa-check"></i>
+            </div>
+            <h2>Prediction Complete!</h2>
+            <p id="resultCoin">Here's the forecast for your selected cryptocurrency</p>
+        </div>
+
+        <div class="result-grid">
+            <div class="result-item">
+                <div class="label">Current Price</div>
+                <div class="value" id="currentPrice">$0.00</div>
+            </div>
+            <div class="result-item">
+                <div class="label">Predicted Price</div>
+                <div class="value" id="predictedPrice">$0.00</div>
+            </div>
+
+        <div class="chart-container">
+            <canvas id="predictionChartCanvas"></canvas>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn-secondary" onclick="newPrediction()">
+                <i class="fas fa-plus"></i> New Prediction
+            </button>
+            <a href="{% url 'history' %}" class="btn-secondary">
+                <i class="fas fa-history"></i> View History
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+let pollingInterval; // To store the interval ID for clearing
+
+document.getElementById('predictionForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const loader = document.getElementById('loader');
+    const resultCard = document.getElementById('resultCard');
+    const predictBtn = document.getElementById('predictBtn');
+    const loaderMessage = document.getElementById('loaderMessage');
+    
+    loader.classList.add('active');
+    resultCard.classList.remove('active');
+    predictBtn.disabled = true;
+    loaderMessage.textContent = "Requesting prediction...";
+
+    // Clear any previous polling interval
+    if (pollingInterval) {
+        clearInterval(pollingInterval);
+    }
+    
+    const predictionData = {
+        cryptocurrency: document.getElementById('cryptocurrency').value,
+        output_currency: document.getElementById('currency').value,
+        timeframe_type: document.getElementById('timeframe_type').value,
+        duration: parseInt(document.getElementById('timeframe_value').value)
+    };
+
+    try {
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        // Step 1: Request a prediction task from Django
+        const response = await fetch('{% url "make_prediction" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify(predictionData)
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to start prediction task.');
+        }
+        
+        const data = await response.json();
+        const taskId = data.task_id;
+
+        if (!taskId) {
+            throw new Error("Django did not return a task ID.");
+        }
+
+        loaderMessage.textContent = "Prediction task scheduled. Waiting for results...";
+
+        // Step 2: Start polling for the task status
+        pollingInterval = setInterval(async () => {
+            const statusResponse = await fetch(`/prediction/status/${taskId}/`); // Use backticks for template literal
+            const statusData = await statusResponse.json();
+
+            if (statusData.status === 'success') {
+                clearInterval(pollingInterval); // Stop polling
+                loader.classList.remove('active');
+                resultCard.classList.add('active');
+                predictBtn.disabled = false;
+                
+                // Display results
+                const currency = document.getElementById('currency').value;
+                const currencySymbol = currency === 'USD' ? '$' : '₹';
+                
+                document.getElementById('resultCoin').textContent = 
+                    `Here's the forecast for ${statusData.cryptocurrency}`;
+                document.getElementById('currentPrice').textContent = 
+                    currencySymbol + parseFloat(statusData.current_price).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                document.getElementById('predictedPrice').textContent = 
+                    currencySymbol + parseFloat(statusData.predicted_price).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                
+                // --- REMOVED CONFIDENCE DISPLAY ---
+                // document.getElementById('confidence').textContent = 'N/A';
+                // --- END REMOVED CONFIDENCE DISPLAY ---
+                
+                renderPredictionChart(
+                    parseFloat(statusData.current_price), 
+                    parseFloat(statusData.predicted_price), 
+                    statusData.cryptocurrency, 
+                    'N/A', // No confidence to pass
+                    currencySymbol
+                );
+
+                // Optional: Redirect to prediction_result_view if you want to use that page still
+                // window.location.href = `{% url 'prediction_result' %}?history_id=${statusData.history_id}`;
+                
+            } else if (statusData.status === 'pending' || statusData.status === 'progress') {
+                loaderMessage.textContent = `Processing prediction... (Status: ${statusData.status})`;
+            } else if (statusData.status === 'error') {
+                clearInterval(pollingInterval);
+                loader.classList.remove('active');
+                predictBtn.disabled = false;
+                alert(`Prediction failed. Details: ${statusData.message || 'Unknown error during task execution.'}`);
+            }
+        }, 3000); // Poll every 3 seconds
+        
+    } catch (error) {
+        console.error('Error:', error);
+        alert(`Failed to generate prediction. Please try again. Details: ${error.message}`);
+        loader.classList.remove('active');
+        predictBtn.disabled = false;
+        if (pollingInterval) {
+            clearInterval(pollingInterval);
+        }
+    }
+});
+
+function newPrediction() {
+    document.getElementById('resultCard').classList.remove('active');
+    document.getElementById('predictionForm').reset();
+    // --- REMOVED CONFIDENCE RESET ---
+    // document.getElementById('confidence').textContent = 'N/A';
+    // --- END REMOVED CONFIDENCE RESET ---
+    if (pollingInterval) {
+        clearInterval(pollingInterval); // Stop polling if user starts a new prediction
+    }
+}
+
+// Chart rendering function (remains the same as before)
+function renderPredictionChart(currentPrice, predictedPrice, cryptocurrency, confidenceDisplay, currencySymbol) {
+    const ctx = document.getElementById('predictionChartCanvas');
+    
+    if (window.predictionChartInstance) {
+        window.predictionChartInstance.destroy();
+    }
+
+    // --- REMOVED CHART CONFIDENCE TEXT VARIABLE ---
+    // let chartConfidenceText = confidenceDisplay;
+    // --- END REMOVED ---
+
+    window.predictionChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Current Price', 'Predicted Price'],
+            datasets: [{
+                label: 'Price in ' + (currencySymbol === '$' ? 'USD' : 'INR'),
+                data: [currentPrice, predictedPrice],
+                backgroundColor: [
+                    'rgba(52, 152, 219, 0.8)',
+                    'rgba(46, 204, 113, 0.8)'
+                ],
+                borderColor: [
+                    'rgba(52, 152, 219, 1)',
+                    'rgba(46, 204, 113, 1)'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: `${cryptocurrency} Price Prediction`, // Changed: Removed confidence from title
+                    color: '#fff',
+                    font: {
+                        size: 18,
+                        weight: 'bold'
+                    }
+                },
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return currencySymbol + context.parsed.y.toLocaleString('en-US', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            });
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return currencySymbol + value.toLocaleString();
+                        },
+                        color: 'rgba(255, 255, 255, 0.7)'
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Price (' + (currencySymbol === '$' ? 'USD' : 'INR') + ')',
+                        color: 'rgba(255, 255, 255, 0.8)',
+                        font: {
+                            size: 14,
+                            weight: 'bold'
+                        }
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: 'rgba(255, 255, 255, 0.7)'
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    }
+                }
+            }
+        }
+    });
+}
+</script>
+{% endblock %}

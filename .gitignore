@@ -1,0 +1,14 @@
+# Ignore virtual environments
+venv/
+venv_django/
+.env
+
+# Ignore python cache
+__pycache__/
+*.pyc
+
+# Ignore VS Code settings
+.vscode/
+
+# Ignore database
+db.sqlite3

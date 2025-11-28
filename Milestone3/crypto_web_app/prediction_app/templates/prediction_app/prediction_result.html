@@ -1,0 +1,146 @@
+<!-- Milestone3/templates/prediction_app/prediction_result.html -->
+{% extends 'base.html' %}
+
+{% block title %}Prediction Result{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h1 class="mb-4 text-center">Prediction Complete!</h1>
+
+    {% if prediction_data %}
+      <div class="row text-center mb-5 justify-content-center"> {# Added justify-content-center to center the two cards #}
+          <div class="col-md-4">
+              <div class="card p-3 shadow-sm">
+                  <h5 class="text-muted">Current Price</h5>
+                  <h3 class="text-success">
+                      {% if prediction_data.current_price != "N/A" %}
+                          ${{ prediction_data.current_price|floatformat:2 }}
+                      {% else %}
+                          N/A
+                      {% endif %}
+                  </h3>
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="card p-3 shadow-sm">
+                  <h5 class="text-muted">Predicted Price</h5>
+                  <h3 class="text-primary">
+                      {% if prediction_data.predicted_value != "N/A" %}
+                          ${{ prediction_data.predicted_value|floatformat:2 }}
+                      {% else %}
+                          N/A
+                      {% endif %}
+                  </h3>
+              </div>
+          </div>
+          {# REMOVED: The 'Confidence' card as it's not backed by ML code #}
+      </div>
+
+      <h3 class="mb-3 text-center">{{ prediction_data.cryptocurrency }} Price Prediction</h3>
+      
+      <!-- Canvas for Chart.js -->
+      <div style="max-width: 800px; margin: 20px auto;">
+        <canvas id="predictionChart"></canvas>
+      </div>
+
+      <div class="text-center mt-4">
+          <a href="{% url 'prediction_form' %}" class="btn btn-primary me-2">Make New Prediction</a>
+          <a href="{% url 'history' %}" class="btn btn-outline-secondary">View History</a>
+      </div>
+
+    {% else %}
+      <div class="alert alert-info text-center" role="alert">
+        <p>No prediction data found. Please make a prediction first.</p>
+        <a href="{% url 'prediction_form' %}" class="btn btn-primary">Go to Prediction Form</a>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const predictionDataElement = document.getElementById('prediction_data_json');
+    const parsedPredictionData = JSON.parse(predictionDataElement.textContent);
+
+    const currentPrice = parseFloat(parsedPredictionData.current_price) || 0;
+    const predictedPrice = parseFloat(parsedPredictionData.predicted_value) || 0;
+    const cryptocurrency = parsedPredictionData.cryptocurrency || 'Crypto';
+    // REMOVED: Confidence variable as it was a dummy value and not from ML code
+
+    // Create the chart
+    const ctx = document.getElementById('predictionChart').getContext('2d');
+    const predictionChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Current Price', 'Predicted Price'],
+        datasets: [{
+          label: 'Price in USD',
+          data: [currentPrice, predictedPrice],
+          backgroundColor: [
+            'rgba(52, 152, 219, 0.8)', // Blue for current
+            'rgba(46, 204, 113, 0.8)'  // Green for predicted
+          ],
+          borderColor: [
+            'rgba(52, 152, 219, 1)',
+            'rgba(46, 204, 113, 1)'
+          ],
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false, 
+        plugins: {
+          title: {
+            display: true,
+            // REMOVED: Confidence from the chart title
+            text: cryptocurrency + ' Price Prediction', 
+            font: {
+              size: 18,
+              weight: 'bold'
+            }
+          },
+          legend: {
+            display: false
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return '$' + context.parsed.y.toLocaleString('en-US', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2
+                });
+              }
+            }
+          }
+        },
+        scales: {
+          x: { 
+            grid: {
+              display: false
+            }
+          },
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: function(value) {
+                return '$' + value.toLocaleString();
+              }
+            },
+            title: {
+              display: true,
+              text: 'Price (USD)',
+              font: {
+                size: 14,
+                weight: 'bold'
+              }
+            }
+          }
+        }
+      }
+    });
+  });
+</script>
+{% endblock %}

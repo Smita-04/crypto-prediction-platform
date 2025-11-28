@@ -1,0 +1,541 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}History - CryptoPredict{% endblock %}
+
+{% block extra_css %}
+<style>
+   body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        min-height: 100vh;
+        color: #fff;
+    }
+
+    .navbar {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        padding: 20px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .navbar-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .logo-icon {
+        width: 45px;
+        height: 45px;
+        background: linear-gradient(135deg, #00ff9d, #00d4ff);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: #0f0c29;
+    }
+
+    .logo h2 {
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 30px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .nav-links a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        font-size: 15px;
+        transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+        color: #00ff9d;
+    }
+
+    .logout-btn {
+        padding: 10px 25px;
+        background: rgba(255, 59, 48, 0.2);
+        border: 1px solid rgba(255, 59, 48, 0.5);
+        border-radius: 8px;
+        color: #ff6b6b;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-family: 'Poppins', sans-serif;
+        font-size: 15px;
+    }
+
+    .logout-btn:hover {
+        background: rgba(255, 59, 48, 0.3);
+    }
+    .main-container {
+        max-width: 1400px;
+        margin: 40px auto;
+        padding: 0 40px;
+    }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 50px;
+        animation: fadeInDown 0.8s ease;
+    }
+
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .page-header h1 {
+        font-size: 42px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        background: linear-gradient(135deg, #00ff9d, #00d4ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .page-header p {
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .filter-bar {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 40px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .filter-bar .form-group {
+        margin-bottom: 0;
+        flex-grow: 1;
+        min-width: 150px;
+    }
+
+    .filter-bar label {
+        display: none; /* Hide labels for compact filter bar */
+    }
+
+    .filter-bar .form-select,
+    .filter-bar .form-input {
+        width: 100%;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 10px;
+        color: #fff;
+        font-size: 14px;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .filter-bar .form-select option {
+        background: #1a1a2e;
+        color: #fff;
+    }
+
+    .filter-bar .form-select:focus,
+    .filter-bar .form-input:focus {
+        outline: none;
+        border-color: #00ff9d;
+    }
+
+    .filter-btn {
+        padding: 12px 25px;
+        background: linear-gradient(135deg, #00ff9d, #00d4ff);
+        border: none;
+        border-radius: 10px;
+        color: #0f0c29;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .filter-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 255, 157, 0.3);
+    }
+
+    .history-table-container {
+        overflow-x: auto;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 25px;
+    }
+
+    .history-table {
+        width: 100%;
+        border-collapse: collapse;
+        white-space: nowrap; /* Prevent text wrapping in cells */
+    }
+
+    .history-table th,
+    .history-table td {
+        text-align: left;
+        padding: 15px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        font-size: 14px;
+    }
+
+    .history-table th {
+        color: rgba(255, 255, 255, 0.7);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .history-table td {
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .history-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .history-table .coin-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .history-table .coin-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        color: #0f0c29;
+    }
+
+    .history-table .coin-symbol {
+        font-weight: 600;
+    }
+    
+    .history-table .coin-currency {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .history-table .action-buttons {
+        display: flex;
+        gap: 8px;
+    }
+
+    .history-table .action-btn {
+        width: 35px;
+        height: 35px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 16px;
+        transition: background 0.3s;
+        border: none;
+        cursor: pointer;
+    }
+
+    .history-table .action-btn.view {
+        background: rgba(0, 255, 157, 0.2);
+        color: #00ff9d;
+    }
+
+    .history-table .action-btn.view:hover {
+        background: rgba(0, 255, 157, 0.3);
+    }
+
+    .history-table .action-btn.delete {
+        background: rgba(255, 59, 48, 0.2);
+        color: #ff6b6b;
+    }
+
+    .history-table .action-btn.delete:hover {
+        background: rgba(255, 59, 48, 0.3);
+    }
+    
+    .no-history {
+        text-align: center;
+        padding: 50px;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 18px;
+    }
+
+    .clear-history-container {
+        text-align: right;
+        margin-top: 30px;
+    }
+
+    .clear-history-btn {
+        padding: 10px 20px;
+        background: rgba(255, 59, 48, 0.2);
+        border: 1px solid rgba(255, 59, 48, 0.5);
+        border-radius: 8px;
+        color: #ff6b6b;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-family: 'Poppins', sans-serif;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .clear-history-btn:hover {
+        background: rgba(255, 59, 48, 0.3);
+    }
+
+    /* Styles for Font Awesome icons for coins */
+    .btc { background: linear-gradient(135deg, #f7931a, #ff6b35); }
+    .eth { background: linear-gradient(135deg, #627eea, #8a92b2); }
+    .ada { background: linear-gradient(135deg, #0033ad, #0055ff); }
+    .xrp { background: linear-gradient(135deg, #23292e, #4a4f54); } /* Assuming XRP icon and color */
+    .sol { background: linear-gradient(135deg, #14f195, #9945ff); }
+    .doge { background: linear-gradient(135deg, #c2a633, #e5c100); }
+    .dot { background: linear-gradient(135deg, #e6007a, #ff4d9f); }
+    .ltc { background: linear-gradient(135deg, #345d9d, #4a7abc); }
+    .link { background: linear-gradient(135deg, #2a5ada, #4c7ef3); }
+    .matic { background: linear-gradient(135deg, #8247e5, #a569ff); }
+
+
+    @media (max-width: 768px) {
+        .filter-bar {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .filter-bar .form-group {
+            min-width: unset;
+            width: 100%;
+        }
+
+        .navbar-container {
+            flex-direction: column;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<nav class="navbar">
+    <div class="navbar-container">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <h2>CryptoPredict</h2>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'welcome' %}"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="{% url 'prediction_form' %}"><i class="fas fa-chart-bar"></i> Predictions</a>
+            <a href="{% url 'history' %}"><i class="fas fa-history"></i> History</a>
+            <form method="POST" action="{% url 'account_logout' %}" style="display: inline; margin: 0;">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="main-container">
+    <div class="page-header">
+        <h1><i class="fas fa-history"></i> Prediction History</h1>
+        <p>Review your past cryptocurrency predictions and their outcomes</p>
+    </div>
+
+    <form method="GET" action="{% url 'history' %}" class="filter-bar">
+        <div class="form-group">
+            <label for="coin_filter">Cryptocurrency</label>
+            <select id="coin_filter" name="coin" class="form-select">
+                <option value="">All Coins</option>
+                {% for crypto in cryptocurrencies %}
+                    <option value="{{ crypto.code }}" {% if crypto.code == filter_coin %}selected{% endif %}>
+                        {{ crypto.name }} ({{ crypto.code }})
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="date_from_filter">Date From</label>
+            <input type="date" id="date_from_filter" name="date_from" class="form-input" value="{{ filter_date_from }}">
+        </div>
+        <div class="form-group">
+            <label for="date_to_filter">Date To</label>
+            <input type="date" id="date_to_filter" name="date_to" class="form-input" value="{{ filter_date_to }}">
+        </div>
+        <button type="submit" class="filter-btn"><i class="fas fa-filter"></i> Apply Filters</button>
+        <a href="{% url 'download_history_report' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}" class="filter-btn">
+            <i class="fas fa-download"></i> Download CSV
+        </a>
+    </form>
+
+    {% if predictions %}
+    <div class="history-table-container">
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>Cryptocurrency</th>
+                    <th>Date & Time</th>
+                    <th>Timeframe</th>
+                    <th>Price at Prediction Time</th>
+                    <th>Predicted Price</th>
+                    {# REMOVED: <th>Actual Price</th> #}
+                    {# REMOVED: <th>Accuracy</th> #}
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for prediction in predictions %}
+                <tr>
+                    <td>
+                        <div class="coin-info">
+                            {# Use a static mapping or dynamic class for icons based on crypto.code #}
+                            <div class="coin-icon {{ prediction.cryptocurrency|lower }}">
+                                {% if prediction.cryptocurrency == 'BTC' %}<i class="fab fa-bitcoin"></i>
+                                {% elif prediction.cryptocurrency == 'ETH' %}<i class="fab fa-ethereum"></i>
+                                {% elif prediction.cryptocurrency == 'ADA' %}<i class="fas fa-heart"></i>
+                                {% elif prediction.cryptocurrency == 'XRP' %}<i class="fas fa-x-ray"></i>
+                                {% elif prediction.cryptocurrency == 'SOL' %}<i class="fas fa-sun"></i>
+                                {% elif prediction.cryptocurrency == 'DOGE' %}<i class="fas fa-dog"></i>
+                                {% elif prediction.cryptocurrency == 'DOT' %}<i class="fas fa-circle-notch"></i>
+                                {% elif prediction.cryptocurrency == 'LTC' %}<i class="fas fa-lira-sign"></i>
+                                {% elif prediction.cryptocurrency == 'LINK' %}<i class="fas fa-link"></i>
+                                {% elif prediction.cryptocurrency == 'MATIC' %}<i class="fas fa-layer-group"></i>
+                                {% else %}<i class="fas fa-coins"></i>{# Default icon #}
+                                {% endif %}
+                            </div>
+                            <div>
+                                <div class="coin-symbol">{{ prediction.cryptocurrency }}</div>
+                                <div class="coin-currency">{{ prediction.output_currency }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{ prediction.prediction_date|date:"Y-m-d H:i" }}</td>
+                    <td>{{ prediction.interval }}</td>
+                    <td>{{ prediction.formatted_price_at_prediction_time }}</td>
+                    <td>{{ prediction.formatted_predicted_value }}</td>
+                    {# REMOVED: <td>{{ prediction.formatted_actual_price }}</td> #}
+                    {# REMOVED: <td>{{ prediction.formatted_accuracy }}</td> #}
+                    <td>
+                        <div class="action-buttons">
+                            <a href="{% url 'prediction_result' %}?history_id={{ prediction.id }}" class="action-btn view" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <button class="action-btn delete" onclick="deletePrediction('{{ prediction.id }}')" title="Delete">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="clear-history-container">
+        <button class="clear-history-btn" onclick="clearAllHistory()">
+            <i class="fas fa-eraser"></i> Clear All History
+        </button>
+    </div>
+
+    {% else %}
+    <p class="no-history">No prediction history found. Make a prediction to see it here!</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Function to delete a single prediction record
+function deletePrediction(predictionId) {
+    if (confirm('Are you sure you want to delete this prediction record?')) {
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        fetch(`/history/delete/${predictionId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrftoken,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert(data.message);
+                window.location.reload(); // Reload page to update history
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting prediction:', error);
+            alert('An error occurred while deleting the record.');
+        });
+    }
+}
+
+// Function to clear all history
+function clearAllHistory() {
+    if (confirm('Are you sure you want to clear ALL your prediction history? This action cannot be undone.')) {
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        fetch('/history/clear_all/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrftoken,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert(data.message);
+                window.location.reload(); // Reload page to update history
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error clearing history:', error);
+            alert('An error occurred while clearing history.');
+        });
+    }
+}
+</script>
+{% endblock %}
