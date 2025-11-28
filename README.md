@@ -108,3 +108,21 @@ CRYPTO-PREDICTION-PLATFORM/
 ├── static/                  # CSS, JavaScript, Images
 ├── manage.py
 └── requirements.txt
+
+## ⚙️ Installation & Setup (WSL/Linux)
+
+**Note:** Since this project utilizes **Redis** (as a message broker) and **Celery** (for asynchronous tasks), it is strictly recommended to run this project inside **WSL (Windows Subsystem for Linux)** or a native Linux environment (Ubuntu/Debian).
+
+### 1. Prerequisites
+Ensure you have the following installed in your WSL/Linux environment:
+*   **Python 3.8+**
+*   **Git**
+*   **Redis Server:**
+    ```bash
+    sudo apt-get install redis-server
+    ```
+
+### 2. Clone the Repository
+```bash
+git clone https://github.com/Smita-04/crypto-prediction-platform.git
+cd crypto-prediction-platform
