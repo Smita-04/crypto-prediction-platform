@@ -26,7 +26,12 @@
 
 
 ### 3. Prediction Results & Graphs
-![Results Graph](screenshots/prediction.png)
+<img width="1920" height="1080" alt="Screenshot (286)" src="https://github.com/user-attachments/assets/55a859ab-1690-4b22-a2e2-cddcb9591cd3" />
+
+<img width="1920" height="1080" alt="Screenshot (297)" src="https://github.com/user-attachments/assets/7ecaa6f2-528f-4100-86c0-84d0035dbb23" />
+
+<img width="1920" height="1080" alt="Screenshot (298)" src="https://github.com/user-attachments/assets/327098a8-8ac8-4164-8248-ad70d0153262" />
+
 
 ---
 
