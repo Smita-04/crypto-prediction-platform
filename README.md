@@ -4,8 +4,11 @@
 ![Django](https://img.shields.io/badge/Django-4.0%2B-green)
 ![TensorFlow](https://img.shields.io/badge/TensorFlow-Keras-orange)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
+![Celery](https://img.shields.io/badge/Celery-Async_Tasks-green)
+![Redis](https://img.shields.io/badge/Redis-Message_Broker-red)
+![Binance API](https://img.shields.io/badge/API-Binance_RealTime-yellow)
 
-**CryptoSight** is a machine learning-based web application that predicts future prices of major cryptocurrencies (Bitcoin, Ethereum, Solana, etc.). Built with **Django** and **TensorFlow**, it utilizes LSTM (Long Short-Term Memory) neural networks to analyze historical data and forecast hourly and daily price trends.
+**CryptoPredict** is a machine learning-based web application that predicts future prices of major cryptocurrencies (Bitcoin, Ethereum, Solana, etc.). Built with **Django** and **TensorFlow**, it utilizes LSTM (Long Short-Term Memory) neural networks to analyze historical data and forecast hourly and daily price trends.
 
 ---
 
